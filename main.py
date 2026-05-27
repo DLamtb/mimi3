@@ -15,7 +15,7 @@ load_dotenv()
 # ================= 统一全局配置（优先读 .env，有默认值兜底） =================
 SERVER_HOST = os.getenv("SERVER_HOST", "0.0.0.0")
 SERVER_PORT = int(os.getenv("SERVER_PORT", "8000"))
-WS_TUNNEL_URL = os.getenv("WS_TUNNEL_URL", f"ws://your-domain.com:{SERVER_PORT}/ws")
+WS_TUNNEL_URL = os.getenv("WS_TUNNEL_URL", f"ws://{SERVER_HOST}:{SERVER_PORT}/ws")
 # ================================================
 
 os.environ["MIMO2API_WS_URL"] = WS_TUNNEL_URL
@@ -33,8 +33,9 @@ if __name__ == "__main__":
 
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
+    root_logger.handlers.clear()
 
-    fmt = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    fmt = logging.Formatter("%(asctime)s - [%(name)s] - %(levelname)s - %(message)s")
 
     # journal（stdout）
     sh = logging.StreamHandler()
